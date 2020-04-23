@@ -1,6 +1,6 @@
 {
   "name": "gh-webhook-consumer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A sample consumer for Github webhooks",
   "main": "./lib/app.js",
   "author": "Soumik Mukherjee <me@soumikmukherjee.dev>",
