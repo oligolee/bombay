@@ -16,32 +16,36 @@ export const Event = {
       },
     },
     handler: function (request, h) {
-      let wasFileWritten = false;
+      //let wasFileWritten = false;
       try {
         const storage = new Storage();
         const srcBucket = storage.bucket("kutuka-bombay");
         const ghDeliveryId = request.headers[GH_DELIVERY_HDR];
-        const newFileName = `src-events-raw/gh_event_${ghDeliveryId}`;
+        const newFileName = `src-events-raw/gh_event_${ghDeliveryId}.json`;
         const newFile = srcBucket.file(newFileName);
 
         Readable.from(JSON.stringify(request.payload))
           .pipe(newFile.createWriteStream())
           .on("error", function (err) {
-            wasFileWritten = false;
+            //wasFileWritten = false;
+            return h.response("Internal error").code(500);
             console.error(err);
           })
           .on("finish", function () {
-            wasFileWritten = true;
+            //wasFileWritten = true;
             console.log("Finished writing event file");
+            return h.response("created").type("text/plain").code(201);
           });
       } catch (err) {
         console.error(err);
       }
+      /*
       if (wasFileWritten) {
-        return h.response("created").type("text/plain").code(201);
+        
       } else {
-        return h.response("Internal error").code(500);
+        
       }
+      */
     },
   },
 };
