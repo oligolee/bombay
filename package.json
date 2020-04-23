@@ -20,7 +20,7 @@
     "dev:run": "yarn start",
     "dev:debug": "node --nolazy --inspect-brk=9229 ./lib/app.js ",
     "encrypt:env-files": "gcloud kms encrypt --key=cloudbuild-env-config --keyring=capturio-keyring --location=global --plaintext-file=./.env --ciphertext-file=./.env.enc",
-    "deploy:cloud-run": "gcloud builds submit"
+    "deploy:cloud-run": "gcloud builds submit --config cloudbuild.yaml --substitutions _IMG_VERSION=manual"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
