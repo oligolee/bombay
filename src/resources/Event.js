@@ -1,8 +1,11 @@
 import { GithubHooksAuth } from "../auth/GithubHooksAuth";
 import { Storage } from "@google-cloud/storage";
-import { Readable } from "stream";
+import { Readable, pipeline } from "stream";
+import {Util} from 'util';
+
 
 const GH_DELIVERY_HDR = "x-github-delivery";
+const pipeline = Util.promisify(pipeline);
 
 export const Event = {
   create: {
@@ -15,8 +18,7 @@ export const Event = {
         payload: true, // MANDATORY to activate the payload validation auth mechanism for github webhooks
       },
     },
-    handler: function (request, h) {
-      //let wasFileWritten = false;
+    handler: async function (request, h) {
       try {
         const storage = new Storage();
         const srcBucket = storage.bucket("kutuka-bombay");
@@ -24,28 +26,26 @@ export const Event = {
         const newFileName = `src-events-raw/gh_event_${ghDeliveryId}.json`;
         const newFile = srcBucket.file(newFileName);
 
-        Readable.from(JSON.stringify(request.payload))
-          .pipe(newFile.createWriteStream())
+        const payloadAsStream = Readable.from(JSON.stringify(request.payload));
+        const newFileAsStream = newFile.createWriteStream();
+
+        await pipeline(payloadAsStream, newFileAsStream);
+        /*payloadAsStream.pipe(newFileAsStream)
           .on("error", function (err) {
-            //wasFileWritten = false;
-            return h.response("Internal error").code(500);
             console.error(err);
+            //return h.response("Internal error").code(500);
+            newFileAsStream.end();
+
           })
           .on("finish", function () {
-            //wasFileWritten = true;
             console.log("Finished writing event file");
-            return h.response("created").type("text/plain").code(201);
           });
+          */
+          return h.response("created").type("text/plain").code(201);
       } catch (err) {
         console.error(err);
+        return h.response("Internal error").code(500);
       }
-      /*
-      if (wasFileWritten) {
-        
-      } else {
-        
-      }
-      */
     },
   },
 };
