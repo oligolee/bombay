@@ -10,6 +10,7 @@ RUN yarn
 COPY --chown=node:node src ./src/
 COPY --chown=node:node .babelrc .
 COPY --chown=node:node .env .
+COPY --chown=node:node key.json .
 
 RUN yarn build
 EXPOSE 8080

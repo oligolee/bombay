@@ -7,13 +7,14 @@
   "license": "Apache-2.0",
   "private": true,
   "dependencies": {
+    "@google-cloud/storage": "^4.7.0",
     "@hapi/boom": "^9.1.0",
     "@hapi/hapi": "^19.1.1",
     "@hapi/hoek": "^9.0.4",
     "dotenv": "^8.2.0"
   },
   "scripts": {
-    "start": "node ./lib/app.js",
+    "start": "export GOOGLE_APPLICATION_CREDENTIALS=\"/home/node/app/key.json\" && node ./lib/app.js",
     "build:dev": "babel src --out-dir lib --source-maps",
     "build": "babel src --out-dir lib",
     "dev:clean": "rm -rf ./lib/",
