@@ -1,6 +1,6 @@
 {
   "name": "gh-webhook-consumer",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "A sample consumer for Github webhooks",
   "main": "./lib/app.js",
   "author": "Soumik Mukherjee <me@soumikmukherjee.dev>",
@@ -15,7 +15,7 @@
   "scripts": {
     "start": "node ./lib/app.js",
     "build:dev": "babel src --out-dir lib --source-maps",
-    "build": "babel src --out-dir lib",  
+    "build": "babel src --out-dir lib",
     "dev:clean": "rm -rf ./lib/",
     "dev:run": "yarn start",
     "dev:debug": "node --nolazy --inspect-brk=9229 ./lib/app.js ",
