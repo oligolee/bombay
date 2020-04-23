@@ -5,7 +5,7 @@ import {Util} from 'util';
 
 
 const GH_DELIVERY_HDR = "x-github-delivery";
-const pipeline = Util.promisify(pipeline);
+const _pipeline = Util.promisify(pipeline);
 
 export const Event = {
   create: {
@@ -29,7 +29,7 @@ export const Event = {
         const payloadAsStream = Readable.from(JSON.stringify(request.payload));
         const newFileAsStream = newFile.createWriteStream();
 
-        await pipeline(payloadAsStream, newFileAsStream);
+        await _pipeline(payloadAsStream, newFileAsStream);
         /*payloadAsStream.pipe(newFileAsStream)
           .on("error", function (err) {
             console.error(err);
