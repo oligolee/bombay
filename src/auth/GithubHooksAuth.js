@@ -26,17 +26,19 @@ export const GithubHooksAuth = {
         let ghSignature = "";
         let { apiKey } = options;
         if (!apiKey) {
-          request.log(
+          /*request.log(
             "ERROR",
             `Authentication failed for client request with digest: ${ghSignature}`
-          );
+          );*/
+          console.error(`Authentication failed for client request with digest: ${ghSignature}`);
           throw Boom.unauthorized(null, HAPI_AUTH_SCHEME_NAME);
         }
         try {
           const ghSignature = request.auth.credentials[GH_SIGN_HEADER];
-          request.log("DEBUG",
+          /*request.log("DEBUG",
             `Authenticating client request with digest: ${ghSignature}`
-          );
+          );*/
+          console.debug(`Authenticating client request with digest: ${ghSignature}`);
           const srcDigest = Buffer.from(ghSignature, "utf8");
           const hmac = Crypto.createHmac("sha1", apiKey);
           hmac.update(JSON.stringify(request.payload));
@@ -47,24 +49,27 @@ export const GithubHooksAuth = {
 
           isValidSignature = Crypto.timingSafeEqual(srcDigest, serverDigest);
         } catch (error) {
-          request.log(
+          /*request.log(
             "ERROR",
             `Authentication failed for client request with digest: ${ghSignature}`
-          );
+          );*/
+          console.error(`Authentication failed for client request with digest: ${ghSignature}`);
           throw Boom.unauthorized(null, HAPI_AUTH_SCHEME_NAME);
         }
 
         if (!isValidSignature) {
-          request.log(
+          /*request.log(
             "ERROR",
             `Authentication failed for client request with digest: ${ghSignature}`
-          );
+          );*/
+          console.error(`Authentication failed for client request with digest: ${ghSignature}`);
           throw Boom.unauthorized(null, HAPI_AUTH_SCHEME_NAME);
         }
 
-        request.log("DEBUG",
+        /*request.log("DEBUG",
           `Authentication succeded for client request with digest: ${ghSignature}`
-        );
+        );*/
+        console.debug(`Authentication succeded for client request with digest: ${ghSignature}`);
         return h.continue;
       },
     };

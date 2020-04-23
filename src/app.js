@@ -28,6 +28,7 @@ init()
   .then((server) => {
     console.log(`Server listening on ${server.info.uri}`);
     // handling server.log() with stdout and stderr
+    /*
     server.events.on("log", (event, tags) => {
       console.info(`Recieved Server#log with tags ${tags}`);
       if (tags.ERROR) {
@@ -36,7 +37,9 @@ init()
         console.debug(event);
       }
     });
+    */
     // handling request.log() to stdout and stderr
+    /*
     server.events.on("request", (event, tags) => {
       console.info(`Recieved Request#log with tags ${tags}`);
       if (tags.ERROR) {
@@ -45,6 +48,7 @@ init()
         console.debug(event);
       }
     });
+    */
   })
   .catch((err) => {
     console.error(err);
