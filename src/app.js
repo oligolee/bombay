@@ -27,7 +27,16 @@ const init = async () => {
 init()
   .then((server) => {
     console.log(`Server listening on ${server.info.uri}`);
+    // handling server.log() with stdout and stderr
     server.events.on("log", (event, tags) => {
+      if (tags.error) {
+        console.error(event);
+      } else {
+        console.log(event);
+      }
+    });
+    // handling request.log() to stdout and stderr
+    server.events.on("request", (event, tags) => {
       if (tags.error) {
         console.error(event);
       } else {
