@@ -27,14 +27,14 @@ export const GithubHooksAuth = {
         let { apiKey } = options;
         if (!apiKey) {
           request.log(
-            "error",
+            "ERROR",
             `Authentication failed for client request with digest: ${ghSignature}`
           );
           throw Boom.unauthorized(null, HAPI_AUTH_SCHEME_NAME);
         }
         try {
           const ghSignature = request.auth.credentials[GH_SIGN_HEADER];
-          request.log(
+          request.log("DEBUG",
             `Authenticating client request with digest: ${ghSignature}`
           );
           const srcDigest = Buffer.from(ghSignature, "utf8");
@@ -48,7 +48,7 @@ export const GithubHooksAuth = {
           isValidSignature = Crypto.timingSafeEqual(srcDigest, serverDigest);
         } catch (error) {
           request.log(
-            "error",
+            "ERROR",
             `Authentication failed for client request with digest: ${ghSignature}`
           );
           throw Boom.unauthorized(null, HAPI_AUTH_SCHEME_NAME);
@@ -56,13 +56,13 @@ export const GithubHooksAuth = {
 
         if (!isValidSignature) {
           request.log(
-            "error",
+            "ERROR",
             `Authentication failed for client request with digest: ${ghSignature}`
           );
           throw Boom.unauthorized(null, HAPI_AUTH_SCHEME_NAME);
         }
 
-        request.log(
+        request.log("DEBUG",
           `Authentication succeded for client request with digest: ${ghSignature}`
         );
         return h.continue;

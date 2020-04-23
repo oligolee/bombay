@@ -29,17 +29,17 @@ init()
     console.log(`Server listening on ${server.info.uri}`);
     // handling server.log() with stdout and stderr
     server.events.on("log", (event, tags) => {
-      if (tags.error) {
+      if (tags.ERROR) {
         console.error(event);
-      } else {
+      } else if(tags.DEBUG) {
         console.log(event);
       }
     });
     // handling request.log() to stdout and stderr
     server.events.on("request", (event, tags) => {
-      if (tags.error) {
+      if (tags.ERROR) {
         console.error(event);
-      } else {
+      } else if(tags.DEBUG) {
         console.log(event);
       }
     });
