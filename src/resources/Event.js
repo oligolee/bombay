@@ -1,8 +1,7 @@
 import { GithubHooksAuth } from "../auth/GithubHooksAuth";
 import { Storage } from "@google-cloud/storage";
 import { Readable, pipeline } from "stream";
-import util from 'util';
-
+import util from "util";
 
 const GH_DELIVERY_HDR = "x-github-delivery";
 const GH_EVENT_HDR = "x-github-event";
@@ -27,20 +26,20 @@ export const Event = {
         const newFileName = `src-events-raw/gh_event_${ghDeliveryId}.json`;
         const newFile = srcBucket.file(newFileName);
         const newFileMetadata = {
-          contentType: 'application/json',
+          contentType: "application/json",
           metadata: {
-            'X-GitHub-Event': request.headers[GH_EVENT_HDR]
-          }
+            "X-GitHub-Event": request.headers[GH_EVENT_HDR],
+          },
         };
-
-        await newFile.setMetadata(newFileMetadata);
 
         const payloadAsStream = Readable.from(JSON.stringify(request.payload));
         const newFileAsStream = newFile.createWriteStream();
 
         await _pipeline(payloadAsStream, newFileAsStream);
 
-          return h.response("created").type("text/plain").code(201);
+        await newFile.setMetadata(newFileMetadata);
+        
+        return h.response("created").type("text/plain").code(201);
       } catch (err) {
         console.error(err);
         return h.response("Internal error").code(500);
