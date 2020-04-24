@@ -1,11 +1,11 @@
 import { GithubHooksAuth } from "../auth/GithubHooksAuth";
 import { Storage } from "@google-cloud/storage";
 import { Readable, pipeline } from "stream";
-import {Util} from 'util';
+import util from 'util';
 
 
 const GH_DELIVERY_HDR = "x-github-delivery";
-const _pipeline = Util.promisify(pipeline);
+const _pipeline = util.promisify(pipeline);
 
 export const Event = {
   create: {
